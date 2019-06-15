@@ -21,4 +21,4 @@ The update.py script may be run at any time to update the data from http://apach
 
  * The length of display can be changed by changing the `await sleep(15000);` in `rs/base.js`.  The value is in milliseconds and the default is 15 seconds.
  * The positioning and other HTML attributes may be changed by editiong the `style.css` file.
- * 
+ 
