@@ -57,7 +57,6 @@ for entry in parsed:
         try:
             data = urllib2.urlopen(url).read()
             with open(localFname, "wb") as code:
-                code.write( "projects = ")
                 code.write(data)
         except urllib2.HTTPError, e:
             print e.code
