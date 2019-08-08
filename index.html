@@ -1,5 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">  
+<!DOCTYPE html>  
 
 <!-- * Licensed to the Apache Software Foundation (ASF) under one -->
 <!-- * or more contributor license agreements.  See the NOTICE file -->
@@ -17,18 +16,19 @@
 <!-- * See the License for the specific language governing permissions and -->
 <!-- * limitations under the License. -->
     
-<HTML>
-    <HEAD>
+<html>
+    <head>
+    	<meta charset="utf-8"/>
         <script src="js/base.js" type="text/javascript"></script>
         <script src="res/logos.json" type="text/javascript"></script>
-        <LINK href="style.css" rel="stylesheet" type="text/css">
-    </HEAD>
+        <link href="style.css" rel="stylesheet" type="text/css" />
+    </head>
 
-    <BODY onload="setup( projects );">
-        <img class="logo" id='logo' />
+    <body onload="setup( projects );">
+        <img class="logo" id='logo' onload="scaleLogo( this )" />
         <div class="name" id='name'></div>
         <div class="established" id='established'></div>
         <a class="website" id='website'></a>
         <p class="description" id='description'></p>
-    </BODY>
-</HTML>
+    </body>
+</html>

@@ -16,30 +16,44 @@
  * limitations under the License.
  */
 
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
 function scaleLogo( logo ) {
+	
     var factor = 1;
     var maxHeight = Math.round( window.screen.availHeight/2 );
-    if (logo.width > window.screen.availWidth) {
-        factor = window.screen.availWidth/logo.width;
-        logo.width = window.screen.availWidth;
-        logo.height = Math.round( logo.height * factor );
+    
+    var scaledHeight = logo.naturalHeight;
+    var scaledWidth = logo.naturalWidth;
+    //console.log( "natural width read "+scaledWidth+" and natural height read "+scaledHeight );
+    if (scaledWidth > window.screen.availWidth) {
+        factor = window.screen.availWidth/logo.naturalWidth;
+        scaledWidth = window.screen.availWidth;
+        scaledHeight = Math.round( logo.naturalHeight * factor );
+        //console.log( "scaling width to "+scaledWidth+" and height to "+scaledHeight ); 
     }
     
-    if (logo.height > maxHeight) {
-        factor = maxHeight/logo.height;
-        logo.height = maxHeight;
-        logo.width = Math.round( logo.width * factor );
-    }    
+    if (scaledHeight > maxHeight) {
+        factor = maxHeight/scaledHeight;
+        scaledHeight = maxHeight;
+        scaledWidth = Math.round( scaledWidth * factor );
+        //console.log( "scaling height to "+scaledHeight+" and width to "+scaledWidth ); 
+    }
+
+    logo.height = scaledHeight ;
+    logo.width = scaledWidth;
+    
+    //console.log( "maxHeight: "+maxHeight+" window: "+window.screen.availWidth+"x"+window.screen.availHeight+" logo: "+logo.width+"x"+logo.height)
      
 }
 
 async function displayProjects( projects ) {
     
-    var logo = document.getElementById("logo");
+	var logo = document.getElementById("logo");    
     var name = document.getElementById("name");
     var established = document.getElementById("established");
     var description = document.getElementById("description");
@@ -47,29 +61,24 @@ async function displayProjects( projects ) {
     
      while (true) {
         for (var key in projects) {
-            if (projects.hasOwnProperty(key)) {
-                var project = projects[key];
-                if (project.images.length) {
-                    var image = project.images[0];
-                    if (image.filename) 
-                    {
-                        logo.src="res/"+ image.filename;                
-                        logo.height = image.height;
-                        logo.width = image.width;
-                        scaleLogo( logo );
-                        name.innerHTML = project.name;
-                        if (project.podling)
-                        {
-                            name.innerHTML = project.name+" (Incubating)";
-                        }
-                        established.innerHTML = "Established "+project.established;
-                        description.innerHTML = project.description;
-                        website.href=project.website;
-                        website.innerHTML=project.website;
-                        await sleep(15000);
-                    }
+            
+            var project = projects[key];
+            if (project.has_default) {
+            	//console.log( "project: "+key )
+                var image = key+".png";
+                logo.src="res/"+ image; 
+                name.innerHTML = project.name;
+                if (project.podling)
+                {
+                    name.innerHTML = project.name+" (Incubating)";
                 }
+                established.innerHTML = "Established "+project.established;
+                description.innerHTML = project.description;
+                website.href=project.website;
+                website.innerHTML=project.website;
+                await sleep(15000);
             }
+            
         }
     }
 }
