@@ -16,51 +16,54 @@
  * limitations under the License.
 '''
  
-import urllib2
+import urllib.request
+import urllib.error
 import json
 import os 
 
 
+# get the directory path on the file system
 dirPath = os.path.dirname(os.path.realpath(__file__))
 
 directory = dirPath+"/res/"
 try :
     os.makedirs( directory )
-except OSError, e:
+except OSError:
     pass
         
+# read the logos.json file from apache.org and save it with 'projects=' before it.        
 print( "Retrieving projects..." )        
 urlPfx = "http://apache.org/logos/res/"
-contents = urllib2.urlopen( "http://apache.org/logos/res/logos.json").read()
+contents = urllib.request.urlopen( "http://apache.org/logos/res/logos.json").read()
 localName = directory+"logos.json"
 with open(localName, "wb") as code:
-    code.write( "projects=")
+    code.write( str.encode("projects=") )
     code.write(contents)
-    
+
+# parse the contents and iterate over each entry    
 parsed = json.loads( contents )
 
 for entry in parsed:
-    print( "Project: "+entry )
+    
     directory = dirPath+"/res/"+entry
     try:
         os.makedirs( directory )
-    except OSError, e:
+    except OSError:
         pass
 
     project = parsed[entry]
-    images = project["images"]
-    for image in images:
-        fileName = image['filename']
-        localFname = dirPath+'/res/'+fileName
-        url = urlPfx + fileName
-        print( "  file: "+fileName )
+    if project['has_default'] == True :
+        url = "{}{}/default_hr.png".format( urlPfx, entry )
+        localFname = "{}/res/{}.png".format( dirPath, entry )
+        print( "{} has logo".format( entry ) )
         try:
-            data = urllib2.urlopen(url).read()
+            data = urllib.request.urlopen(url).read()
             with open(localFname, "wb") as code:
                 code.write(data)
-        except urllib2.HTTPError, e:
-            print e.code
-            print e.msg
-            print e.headers
-            print e.fp.read()
-        
+        except urllib.error.HTTPError as e:
+            print( e.code )
+            print( e.msg )
+            print( e.headers )
+            print( e.fp.read() )
+    else :
+        print( "{} does not have logo".format( entry ))    
