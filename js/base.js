@@ -20,9 +20,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-var project;
-var logo = document.getElementById("logo");    
-var name = document.getElementById("name");
+var project;  
 
 function scaleLogo( logo ) {
 	
@@ -61,6 +59,7 @@ function scaleLogo( logo ) {
 function updateInfo( img ) {
 	
 	scaleLogo( img )
+	var name = document.getElementById("name");
 	var established = document.getElementById("established");
 	var description = document.getElementById("description");
 	var website = document.getElementById("website");
@@ -77,20 +76,29 @@ function updateInfo( img ) {
     
 }
 
-async function displayProjects( projects ) {
+async function displayProjects( projects, names ) {
 	var logo = document.getElementById("logo");
     while (true) {
-    	for (var key in projects) {
-            project = projects[key];
-            if (project.has_default) {
-            	// console.log( "project: "+key )
-                logo.src="res/"+ key+".png";                 
-                await sleep(15000);
-            }
+    	for (var key in names) {
+            project = projects[names[key]];
+            
+        	// console.log( "project: "+key )
+            logo.src="res/"+ names[key]+".png";                 
+            await sleep(15000);
+            
         }
     }
 }
 
 function setup( projects ) {
-    displayProjects( projects )
+	var names = [];
+	for (var key in projects) {
+		if (projects[key].has_default) {
+			names.push( key );
+		}
+	}
+		
+	names.sort();
+	
+    displayProjects( projects, names )
 }
