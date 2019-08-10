@@ -6,7 +6,7 @@ Requires python 3.
 
 Run the `update.py` script to download the data from http://apache.org/logos.  The script must be run before the first loading of index.html.
 
-    python update.py
+    python3 update.py
 
 ## Display the page
 
