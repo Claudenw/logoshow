@@ -34,7 +34,9 @@
 }
 .description {
   font-size: 200%;
-  text-align: justified;
+  text-align: center;
+  margin-right: 10%;
+  margin-left: 10%
 }
 .website {
   text-align: center;
